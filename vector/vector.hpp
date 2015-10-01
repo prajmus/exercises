@@ -9,7 +9,6 @@
 
 /* TODO:
  * - vector& operator=( const vector &other );
- * - vector& operator=( vector&& other );
  * - vector& operator=( std::initializer_list<T> l );
  * - void assign( size_t count, const T& value );
  * - void assing( InputIt first, IntputIt last );
@@ -18,12 +17,9 @@
  * - const_reference front() const;
  * - reference back();
  * - const_reference back() const;
- * - const T* data() const;
  * - size_type max_size() const noexcept;
  * - void reserve( size_type new_cap );
- * - size_type capacity() const noexcept;
  * - void shrink_to_fit();
- * - void clear() noexcept;
  * - insert ();
  * - iterator erase( iterator pos );
  * - void pop_back();
