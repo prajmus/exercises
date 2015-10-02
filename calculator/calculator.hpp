@@ -2,10 +2,11 @@
 #ifndef CALCULATOR_HPP_
 #define CALCULATOR_HPP_
 
-#include <sstream>
-#include <string>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 std::vector<std::string> has_delimiter(std::string &str) {
     std::vector<std::string> delims;  // vector to store delimeters
@@ -74,7 +75,7 @@ int add(std::string numbers) {
 
     if (!negatives.empty()) {
         std::string message = "negatives not allowed: ";
-        for(auto &i : negatives) {
+        for (auto &i : negatives) {
             message += std::to_string(i);
         }
         throw std::logic_error(message);

@@ -18,7 +18,7 @@ void many_single_numbers() {
     BOOST_CHECK_EQUAL(add("3"), 3);
     BOOST_CHECK_EQUAL(add("134"), 134);
     // BOOST_CHECK_EQUAL(add("9456"), 9456); --> invalid after step 6
-    BOOST_CHECK_EQUAL(add("9456"), 0); // after step 6
+    BOOST_CHECK_EQUAL(add("9456"), 0);  // after step 6
 }
 
 void two_numbers() {
