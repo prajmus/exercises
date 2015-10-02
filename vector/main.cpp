@@ -24,20 +24,21 @@ void constructors_test() {
     Vector<int> v;
     BOOST_CHECK_EQUAL(v.size(), 0);
     BOOST_CHECK_EQUAL(v.capacity(), 0);
-    BOOST_CHECK_EQUAL(v.data(), nullptr);
+    BOOST_CHECK(!v.data());
 
     Vector<int> x {1, 2, 3, 4};
-    BOOST_CHECK_EQUAL(v.size(), 4);
-    BOOST_CHECK_EQUAL(v[3], 4);
+    BOOST_CHECK_EQUAL(x.size(), 4);
+    BOOST_CHECK_EQUAL(x[3], 4);
 
     Vector<int> y(x);
     BOOST_CHECK_EQUAL(y.size(), 4);
+    BOOST_CHECK_EQUAL(x.size(), 4);
     BOOST_CHECK_EQUAL(y[3], 4);
 
     Vector<int> z(std::move(x));
     BOOST_CHECK_EQUAL(z.size(), 4);
-    BOOST_CHECK_EQUAL(y.size(), 0);
     BOOST_CHECK_EQUAL(z[3], 4);
+    BOOST_CHECK_EQUAL(x.size(), 0);
 }
 
 void basic_vector_operations() {
@@ -71,7 +72,7 @@ void iterators() {
         counter++;
     BOOST_CHECK_EQUAL(counter, 5);
 
-    /* Check post and prefix incrementation */
+    // Check post and prefix incrementation
     Vector<int>::iterator x = v.begin();
     auto y = x++;
     BOOST_CHECK_EQUAL(*y, 1);
@@ -86,6 +87,22 @@ void out_of_range_test() {
     BOOST_CHECK_THROW(v.at(7), std::out_of_range);
 }
 
+void assign_repeat_value() {
+    Vector<int> v;
+    v.assign(10, 2);
+    BOOST_CHECK_EQUAL(v.size(), 10);
+    for (int i=0; i < v.size(); ++i)
+        BOOST_CHECK_EQUAL(v[i], 2);
+}
+
+void assign_initializer_list() {
+    Vector<int> v;
+    v.assign({1,2,3,4,5,6});
+    BOOST_CHECK_EQUAL(v.size(), 6);
+    for (int i=0; i < v.size(); ++i)
+        BOOST_CHECK_EQUAL(v[i], i+1);
+}
+
 test_suite *init_unit_test_suite(int argc, char *argv[]) {
     test_suite *t = BOOST_TEST_SUITE("Create a Vector class");
     t->add(BOOST_TEST_CASE(&size_test));
@@ -93,5 +110,7 @@ test_suite *init_unit_test_suite(int argc, char *argv[]) {
     t->add(BOOST_TEST_CASE(&basic_vector_operations));
     t->add(BOOST_TEST_CASE(&iterators));
     t->add(BOOST_TEST_CASE(&out_of_range_test));
+    t->add(BOOST_TEST_CASE(&assign_repeat_value));
+    t->add(BOOST_TEST_CASE(&assign_initializer_list));
     return t;
 }

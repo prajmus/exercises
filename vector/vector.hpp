@@ -8,11 +8,7 @@
 #include <initializer_list>
 
 /* TODO:
- * - vector& operator=( const vector &other );
- * - vector& operator=( std::initializer_list<T> l );
- * - void assign( size_t count, const T& value );
  * - void assing( InputIt first, IntputIt last );
- * - void assign( std::initializer_list<T> l );
  * - reference front();
  * - const_reference front() const;
  * - reference back();
@@ -41,7 +37,6 @@ class Vector {
     typedef T& reference;
     typedef const reference const_reference;
 
-
     class iterator {
      public:
         explicit iterator(pointer ptr) : m_ptr(ptr) {}
@@ -57,6 +52,23 @@ class Vector {
         bool operator!=(const iterator& rhs) { return m_ptr != rhs.m_ptr; }
      private:
         pointer m_ptr;
+    };
+
+    class const_iterator {
+     public:
+         explicit const_iterator(pointer ptr) : m_ptr(ptr) {}
+         const_iterator operator++() { m_ptr++; return *this; }
+         const_iterator operator++(int unused) {
+             const_iterator i = *this;
+             m_ptr++;
+             return i;
+         }
+         const_reference operator*() { return *m_ptr; }
+         const pointer operator->() { return m_ptr; }
+         bool operator==(const const_iterator& rhs) { return m_ptr == rhs.m_ptr; }
+         bool operator!=(const const_iterator& rhs) { return m_ptr != rhs.m_ptr; }
+     private:
+         const pointer m_ptr;
     };
 
     /*! Default constructor */
@@ -86,7 +98,8 @@ class Vector {
      */
     Vector(const Vector &t) : m_size(t.size()), m_capacity(m_size),
                               m_data(new T[m_capacity]) {
-        copy(t.begin(), t.end(), m_data);
+        for (int i = 0; i < m_size; ++i)
+            m_data[i] = t.m_data[i];
     }
 
     /*!
@@ -105,14 +118,15 @@ class Vector {
     /*!
      * destructs the vector
      */
-    ~Vector() { delete [] m_data; }
+    ~Vector() { if (m_data) delete [] m_data; }
 
     /*!
-     * Move operator
+     * Move assignment
      */
     Vector& operator=(Vector&& mover) {
         if (this != &mover) {
-            delete [] m_data;
+            if (m_data)
+                delete [] m_data;
 
             m_data = mover.m_data;
             m_size = mover.m_size;
@@ -123,6 +137,58 @@ class Vector {
             mover.m_capacity = 0;
         }
         return *this;
+    }
+    /*!
+     * assignment operator
+     */
+    Vector& operator=(const Vector &other) {
+        if (this != &other) {
+            m_size = other.size();
+            m_capacity = m_size;
+
+            if (m_data)
+                delete [] m_data;
+            m_data = new T[m_capacity];
+
+            for (int i = 0; i < m_size; ++i)
+                m_data[i] = other.m_data[i];
+        }
+        return *this;
+    }
+
+    Vector& operator=(std::initializer_list<T> l) {
+        m_size = l.size();
+        m_capacity = m_size;
+
+        if (m_data)
+            delete [] m_data;
+        m_data = new T[m_capacity];
+
+        copy(l.begin(), l.end(), m_data);
+        return *this;
+    }
+
+    void assign(size_t count, const T& value) {
+        if (m_data)
+            delete [] m_data;
+        m_size = count;
+        m_capacity = count;
+
+        m_data = new T[m_capacity];
+
+        fill(m_data, m_data + m_size, value);
+    }
+
+    void assign(std::initializer_list<T> l) {
+        if (m_data)
+            delete [] m_data;
+        m_size = l.size();
+        m_capacity = m_size;
+
+        m_data = new T[m_capacity];
+
+
+        copy(l.begin(), l.end() , m_data);
     }
 
     /*!
@@ -194,10 +260,14 @@ class Vector {
      */
     iterator begin() { return iterator(m_data); }
 
+    const_iterator begin() const { return const_iterator(m_data); }
+
     /*!
      * returns iterator to element after last
      */
     iterator end() { return iterator(m_data + size()); }
+
+    const_iterator end() const { return const_iterator(m_data); }
 
     /*!
      * clears the data in container
