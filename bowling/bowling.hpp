@@ -4,8 +4,15 @@
 
 class Game {
  public:
-     int roll(int pins);
+     void roll(int pins);
      int score();
 };
 
+void Game::roll(int pins) {
+
+}
+
+int Game::score() {
+    return 0;
+}
 #endif  // BOWLING_H_
