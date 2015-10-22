@@ -46,3 +46,8 @@ TEST_F(BowlingTest, test_one_strike) {
     roll_many(16, 0);
     EXPECT_EQ(g.score(), 24);
 }
+
+TEST_F(BowlingTest, test_perfect_game) {
+    roll_many(12, 10);
+    EXPECT_EQ(300, g.score());
+}
