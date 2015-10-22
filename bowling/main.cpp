@@ -11,6 +11,11 @@ class BowlingTest : public ::testing::Test {
         for (int i = 0; i < n; i++)
             g.roll(pins);
     }
+
+    void roll_spare() {
+        g.roll(5);
+        g.roll(5);
+    }
 };
 
 TEST_F(BowlingTest, test_game) {
@@ -24,8 +29,7 @@ TEST_F(BowlingTest, test_all_ones) {
 }
 
 TEST_F(BowlingTest, test_one_spare) {
-    g.roll(5);
-    g.roll(5);  // spare
+    roll_spare();
     g.roll(3);
     roll_many(17, 0);
     EXPECT_EQ(g.score(), 16);
