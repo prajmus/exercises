@@ -16,6 +16,10 @@ class BowlingTest : public ::testing::Test {
         g.roll(5);
         g.roll(5);
     }
+
+    void roll_strike() {
+        g.roll(10);
+    }
 };
 
 TEST_F(BowlingTest, test_game) {
@@ -36,7 +40,7 @@ TEST_F(BowlingTest, test_one_spare) {
 }
 
 TEST_F(BowlingTest, test_one_strike) {
-    g.roll(10);  // strike
+    roll_strike();
     g.roll(3);
     g.roll(4);
     roll_many(16, 0);
