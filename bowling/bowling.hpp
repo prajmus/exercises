@@ -21,6 +21,11 @@ int Game::score() {
     int score = 0;
     int frame_index = 0;
     for (int frame = 0; frame < 10; frame++) {
+        if (rolls[frame_index] == 10) {  //strike
+            score += 10 + rolls[frame_index + 1] +
+                     rolls[frame_index + 2];
+            frame_index++;
+        }
         if (is_spare(frame_index)) {  // spare
             score += 10 + rolls[frame_index+2];
             frame_index += 2;
