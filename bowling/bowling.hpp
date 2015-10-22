@@ -25,7 +25,7 @@ int Game::score() {
     int score = 0;
     int frame_index = 0;
     for (int frame = 0; frame < 10; frame++) {
-        if (is_strike(frame_index)) {  //strike
+        if (is_strike(frame_index)) {  // strike
             score += 10 + strike_bonus(frame_index);
             frame_index++;
         } else if (is_spare(frame_index)) {  // spare
