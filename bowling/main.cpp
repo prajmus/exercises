@@ -22,3 +22,11 @@ TEST_F(BowlingTest, test_all_ones) {
     roll_many(20, 1);
     EXPECT_EQ(g.score(), 20);
 }
+
+TEST_F(BowlingTest, test_one_spare) {
+    g.roll(5);
+    g.roll(5);  // spare
+    g.roll(3);
+    roll_many(17, 0);
+    EXPECT_EQ(g.score(), 16);
+}
