@@ -10,7 +10,7 @@ CONFIG += console
 QT -= gui core
 
 INCLUDEPATH = /usr/include/
-LIBS += -static -lboost_unit_test_framework
+LIBS += -pthread -lgtest -lgtest_main
 
 # Input
 SOURCES += main.cpp
